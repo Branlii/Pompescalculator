@@ -17,11 +17,13 @@ export default styles = StyleSheet.create({
         borderRadius: 20,
         paddingHorizontal: 40,
         paddingVertical: 30,
+        margin: 50,
         shadowColor: "#000",
         shadowOffset: {
-        width: 0,
-        height: 2
+            width: 0,
+            height: 2
         },
+        justifyContent: 'center',
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5,
@@ -53,16 +55,19 @@ export default styles = StyleSheet.create({
         fontSize: 13,
         fontStyle: 'italic',
         margin: 2,
+        textAlign: 'center',
     },
     multiplication: {
-        paddingBottom: 5,
+        paddingBottom: 10,
         marginBottom: 5,
         borderBottomWidth: 1,
+        textAlign: 'center',
     },
     error_text: {
         fontSize: 12,
         color: 'red',
-        marginBottom: 5,
+        marginBottom: 15,
+        textAlign: 'center',
     },
     start_modal: {
         marginTop: 20,
