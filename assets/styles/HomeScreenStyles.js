@@ -66,7 +66,6 @@ export default styles = StyleSheet.create({
     error_text: {
         fontSize: 12,
         color: 'red',
-        marginBottom: 15,
         textAlign: 'center',
     },
     start_modal: {
@@ -74,7 +73,7 @@ export default styles = StyleSheet.create({
         alignItems: 'center'
     },
     start_text: {
-        color: '#1780f7'
+        color: '#1780f7',
     },
     title: {
         flex: 2,

@@ -6,6 +6,7 @@ export const counterSlice = createSlice({
         serie: '',
         rep: '',
         recup: '',
+        step: null,
     },
     reducers: {
         serieModifie: (state, value) => {
@@ -17,9 +18,15 @@ export const counterSlice = createSlice({
         recupModifie: (state, value) => {
             state.recup = value.payload
         },
+        stepCreate: (state, value) => {
+            state.step = value.payload
+        },
+        stepDecrement: (state) => {
+            --state.step
+        }
     },
 })
 
-export const { serieModifie, repModifie, recupModifie } = counterSlice.actions
+export const { serieModifie, repModifie, recupModifie, stepCreate, stepDecrement } = counterSlice.actions
 
 export default counterSlice.reducer

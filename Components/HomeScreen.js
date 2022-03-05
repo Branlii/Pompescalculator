@@ -1,12 +1,12 @@
 import { Text, View, Pressable, Modal, TextInput, KeyboardAvoidingView } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { useState } from 'react'
-import styles from '../assets/styles/AppStyles'
+import styles from '../assets/styles/HomeScreenStyles'
 import getDifferenceInDays from '../methods/getDifferenceInDays';
 import { useSelector, useDispatch } from 'react-redux'
-import { serieModifie, repModifie, recupModifie } from '../store/reducers/counterReducer';
+import { serieModifie, repModifie, recupModifie, stepCreate } from '../store/reducers/counterReducer';
 
-export default function HomeScreen() {    
+export default function HomeScreen({ navigation }) {    
     const [diffDays, setDiffDays] = useState(null)
     const [modal, setModal] = useState(false)
     
@@ -89,11 +89,21 @@ export default function HomeScreen() {
                             {serie === '' || rep === '' || recup === '' ?
                                 <Text style={styles.error_text}>Tous les champs ne sont pas remplis</Text>
                             : !serie.match(/^[0-9]+$/) || !rep.match(/^[0-9]+$/) || !recup.match(/^[0-9]+$/) ?
-                                <Text style={[styles.error_text]}>Veuillez entrer des nombres</Text>
-                            : serie*rep > diffDays &&
+                                <Text style={styles.error_text}>Veuillez entrer des nombres</Text>
+                            : serie*rep > diffDays ?
                                 <Text style={styles.error_text}>Le nombre de pompes est trop élevé</Text>
+                            :
+                                <Pressable
+                                    onPress={() => {
+                                        setModal(false)
+                                        dispatch(stepCreate((serie*2)-1))
+                                        navigation.navigate('Séance')
+                                    }}
+                                >
+                                    <Text style={styles.start_text}>Commencer</Text>
+                                </Pressable>
                             }
-                            <Text style={styles.start_text}>Commencer</Text>
+                            
                         </Pressable>
                     </Pressable>
                 </Pressable>
