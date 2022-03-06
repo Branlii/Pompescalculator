@@ -15,8 +15,11 @@ import {
 } from '../store/reducers/counterReducer';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 
+
+
 export default function HomeScreen({ navigation }) {
     const [modal, setModal] = useState(false)
+    const [marked, setMarked] = useState({})
     
     const serie = useSelector((state) => state.counter.serie)
     const rep = useSelector((state) => state.counter.rep)
@@ -24,10 +27,6 @@ export default function HomeScreen({ navigation }) {
     const diffDays = useSelector((state) => state.counter.diffDays)
     const fill = useSelector((state) => state.counter.fill)
     const dispatch = useDispatch()
-
-    if (serie) {
-        console.log(Math.floor(diffDays/serie).toString())
-    }
 
 	return (
 		<KeyboardAvoidingView 
@@ -44,6 +43,7 @@ export default function HomeScreen({ navigation }) {
                     style={styles.modal_container}
                     onPress={() => {
                         dispatch(clearCounter())
+                        setMarked({})
                         setModal(!modal)
                     }}
                 >
@@ -60,10 +60,10 @@ export default function HomeScreen({ navigation }) {
                                     style={styles.input}
                                     value={serie}
                                     onChangeText={text => {
-                                        if (!rep && serie) {
-                                            dispatch(repModifie(Math.floor(diffDays/serie).toString()))
-                                        }
                                         dispatch(serieModifie(text))
+                                        if (rep === '' && text.match(/^[0-9]+$/)) {
+                                            dispatch(repModifie(Math.floor(diffDays/text).toString()))
+                                        }
                                     }}
                                     placeholder='Nombre de séries'
                                     keyboardType='phone-pad'
@@ -124,11 +124,17 @@ export default function HomeScreen({ navigation }) {
                                 {serie !== '' && rep !== '' && serie*rep < diffDays &&
                                     <View style={styles.desc_view}>
                                         {!fill ? 
-                                            <Text style={styles.series}>+ 1 série de {diffDays-(serie*rep)} pompes</Text> 
+                                            <View>
+                                                <Text style={styles.series}>+ 1 série de {diffDays-(serie*rep)} pompes</Text>
+                                                <Text style={[styles.series, styles.multiplication]}>Soit {serie*rep}+{diffDays-(serie*rep)} = {(serie*rep)+(diffDays-(serie*rep))} pompes</Text>
+                                            </View>
                                         :
-                                            <Text style={styles.series}>Soit {parseInt(rep)+parseInt(diffDays-(serie*rep))} pour la dernière rep</Text>
+                                            <View>
+                                                <Text style={styles.series}>Avec {parseInt(rep)+parseInt(diffDays-(serie*rep))} pour la dernière rep</Text>
+                                                <Text style={[styles.series, styles.multiplication]}>Soit {(serie-1)*rep}+{parseInt(rep)+parseInt(diffDays-(serie*rep))} = {(serie*rep)+(diffDays-(serie*rep))} pompes</Text>
+                                            </View>
                                         }
-                                        <Text style={[styles.series, styles.multiplication]}>Soit {serie*rep}+{diffDays-(serie*rep)} = {(serie*rep)+(diffDays-(serie*rep))} pompes</Text>
+                                        
                                     </View>
                                 }
                                 {recup !== '' &&
@@ -154,6 +160,7 @@ export default function HomeScreen({ navigation }) {
                                                 dispatch(stepCreate((serie*2)-1))
                                             }
                                             navigation.navigate('Séance')
+                                            setMarked({})
                                             setModal(false)
                                         }}
                                     >
@@ -173,7 +180,11 @@ export default function HomeScreen({ navigation }) {
                     style={styles.calendar}
                     minDate='2022-01-01'
                     maxDate='2022-12-31'
-                    onDayPress={day => dispatch(diffDaysModifie(getDifferenceInDays(day)))}
+                    markedDates={marked}
+                    onDayPress={day => {
+                        setMarked({[day.dateString]: {selected: true}})
+                        dispatch(diffDaysModifie(getDifferenceInDays(day)))
+                    }}
                     enableSwipeMonths={true}
                     firstDay={1}
                 />
