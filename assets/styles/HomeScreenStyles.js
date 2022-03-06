@@ -4,7 +4,6 @@ export default styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#f7f7f7',
-        alignItems: 'center',
     },
     modal_container: {
         flex: 1,
@@ -76,17 +75,22 @@ export default styles = StyleSheet.create({
         color: '#1780f7',
     },
     title: {
-        flex: 2,
+        flex: 1,
         justifyContent: 'center',
+        alignItems: 'center',
     },
     calendar_view: {
         flex: 4,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     calendar: {
         borderRadius: 10,
     },
     result_container: {
         flex: 2,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     result_view: {
         flex: 1,
